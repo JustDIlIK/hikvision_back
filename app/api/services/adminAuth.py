@@ -20,7 +20,7 @@ class AdminAuth(AuthenticationBackend):
         if user:
             access_token = create_access_token({"sub": str(user.id)})
             request.session.update({"token": access_token})
-        return True
+            return True
 
     async def logout(self, request: Request) -> bool:
         request.session.clear()
@@ -28,6 +28,7 @@ class AdminAuth(AuthenticationBackend):
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
         token = request.session.get("token")
+        print("token", token)
         if not token:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
         try:

@@ -28,14 +28,14 @@ async def hik_requests_helper(url, **kwargs):
                 print(data)
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Ошибка {data["message"]}. Совет: {Person_errors[data["errorCode"]]}",
+                    detail=f"Ошибка -{data["errorCode"]}- {data["message"]}. Совет: {Person_errors[data["errorCode"]]}",
                 )
             return data
         except HTTPStatusError as e:
             raise HTTPException(
                 status_code=400,
                 detail={
-                    "detail": f"Ошибка {e}. Совет: {Person_errors[e.response.status_code]}"
+                    "detail": f"Ошибка -{e.response.status_code}- {e}. Совет: {Person_errors[e.response.status_code]}"
                 },
             )
         except RequestError as e:

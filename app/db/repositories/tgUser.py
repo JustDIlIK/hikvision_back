@@ -13,18 +13,21 @@ class TgUserDAO(BaseDAO):
     async def get_all(cls):
 
         async with async_session() as session:
-            query = select(cls.model).options(
-                joinedload(cls.model.devices).joinedload(Device.area)
+            query = (
+                select(cls.model)
+                .options(joinedload(cls.model.groups))
+                .options(joinedload(cls.model.devices).joinedload(Device.area))
             )
             result = await session.execute(query)
 
             return result.scalars().unique().all()
 
-    @classmethod
+    @classmethodgi
     async def get_by_tg_id(cls, tg_id):
         async with async_session() as session:
             query = (
                 select(cls.model)
+                .options(joinedload(cls.model.groups))
                 .options(joinedload(cls.model.devices).joinedload(Device.area))
                 .where(cls.model.tg_id == tg_id)
             )
