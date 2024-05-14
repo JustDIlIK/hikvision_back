@@ -12,8 +12,8 @@ async def get_token():
     token_url = f"{settings.HIKVISION_URL}/api/hccgw/platform/v1/token/get"
 
     data = {
-        "appKey": "zmgty84ni29u7vlhd2we5iieo2oafyiq",
-        "secretKey": "khl15eqnah24syua3pbo2l8ixt4q4zhx",
+        "appKey": settings.APP_KEY,
+        "secretKey": settings.SECRET_KEY,
     }
 
     async with AsyncClient() as client:

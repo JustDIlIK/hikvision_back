@@ -22,7 +22,7 @@ class TgUserDAO(BaseDAO):
 
             return result.scalars().unique().all()
 
-    @classmethodgi
+    @classmethod
     async def get_by_tg_id(cls, tg_id):
         async with async_session() as session:
             query = (

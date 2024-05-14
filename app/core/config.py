@@ -14,6 +14,9 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file="app/.env")
 
+    APP_KEY: str
+    SECRET_KEY: str
+
     KEY: str
     ALGORITHM: str
 

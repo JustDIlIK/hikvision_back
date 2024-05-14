@@ -30,13 +30,11 @@ app = FastAPI(
     root_path="/api/v1",
 )
 
-
 app.include_router(router_person)
 app.include_router(router_group)
 app.include_router(router_access)
 app.include_router(router_user)
 app.include_router(router_tg_users)
-
 
 admin = Admin(
     app, engine, authentication_backend=authentication_backend, base_url="/admin/"
