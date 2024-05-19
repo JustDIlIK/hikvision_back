@@ -5,7 +5,7 @@ from app.core.config import settings
 
 
 async def get_token():
-
+    print("getting token")
     if not settings.CURRENT_TOKEN == "":
         return settings.CURRENT_TOKEN
 
@@ -18,6 +18,7 @@ async def get_token():
 
     async with AsyncClient() as client:
         try:
+            print(data)
             response = await client.post(url=token_url, json=data)
             response.raise_for_status()
             data = response.json()

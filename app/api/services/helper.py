@@ -11,6 +11,7 @@ async def hik_requests_helper(url, **kwargs):
 
     async with AsyncClient() as client:
         try:
+            print(kwargs["data"])
             response = await client.post(
                 url=url, headers={"Token": kwargs["token"]}, json=kwargs["data"]
             )
