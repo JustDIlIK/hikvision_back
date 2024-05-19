@@ -157,7 +157,6 @@ async def get_attendance_file(
 
     output.seek(0)
 
-    # Создание HTTP ответа с содержимым файла
     headers = {
         f"Content-Disposition": f"attachment; filename={first_date}-{second_date}.xlsx"
     }
