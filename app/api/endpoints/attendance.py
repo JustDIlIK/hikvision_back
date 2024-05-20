@@ -15,7 +15,7 @@ import pandas as pd
 router = APIRouter(prefix="/attendance", tags=["Расписание"])
 
 
-@router.post("/")
+@router.post("/", summary="Получение данных по посещаемости")
 async def get_attendance_list(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
@@ -43,15 +43,18 @@ async def get_attendance_list(
 
             person_id = person_info["id"]
             person_info = person_info["baseInfo"]
-
+            print(f"{result=}")
             person_info.update({"id": person_id, "snapPicUrl": snap_pic})
-            date, time = result["occurTime"].split("T")
+            date, time = result["deviceTime"].split("T")
             person = SRecordCertificate(
-                **{**person_info, **result, "time": time[:-1], "date": date}
+                **{**person_info, **result, "time": time.split("+")[0], "date": date}
             )
 
             if person_id == "":
                 continue
+
+            if person.photoUrl == "":
+                person.photoUrl = "Убран с базы"
 
             if date in result_data:
 
@@ -82,7 +85,7 @@ async def get_attendance_list(
     return persons_list
 
 
-@router.post("/file")
+@router.post("/file/", summary="Получение данных по посещаемости (файл)")
 async def get_attendance_file(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
@@ -98,8 +101,6 @@ async def get_attendance_file(
     first_date = persons_list[-1]["date"]
     second_date = persons_list[0]["date"]
 
-    print(df)
-
     df.drop(
         [
             "recordGuid",
@@ -110,6 +111,7 @@ async def get_attendance_file(
             "id",
             "personCode",
             "areaName",
+            "deviceName",
         ],
         axis=1,
         inplace=True,
@@ -122,10 +124,10 @@ async def get_attendance_file(
         "date",
         "time",
         "time_end",
-        "deviceName",
         "phoneNum",
         "photoUrl",
         "snapPicUrl",
+        "snapPicUrl2",
     ]
 
     df = df[new_order]
@@ -137,10 +139,10 @@ async def get_attendance_file(
         "date": "Дата",
         "time": "Время входа",
         "time_end": "Время выхода",
-        "deviceName": "Имя устройства",
         "phoneNum": "Номер телефона",
         "photoUrl": "Изображение",
-        "snapPicUrl": "Отметился",
+        "snapPicUrl": "Отметился (Вход)",
+        "snapPicUrl2": "Отметился (Выход)",
     }
 
     df = df.rename(columns=translations)
@@ -158,7 +160,7 @@ async def get_attendance_file(
     output.seek(0)
 
     headers = {
-        f"Content-Disposition": f"attachment; filename={first_date}-{second_date}.xlsx"
+        f"Content-Disposition": f"attachment; filename={first_date}-{second_date}.xlsx; "
     }
     return Response(
         content=output.read(),

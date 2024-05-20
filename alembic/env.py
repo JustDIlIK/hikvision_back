@@ -11,6 +11,7 @@ from app.db.connection import Base
 
 from app.db.models.users import User
 from app.db.models.tg import Area, Device, TgUser
+from app.db.models.records import Record
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

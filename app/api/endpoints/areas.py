@@ -8,7 +8,7 @@ from app.db.schemas.area import SArea
 router = APIRouter(prefix="/areas", tags=["Объекты и устройства"])
 
 
-@router.post("/")
+@router.post("/", summary="Получение данных по устройству, объектам и дверям")
 async def get_areas(area_data: SArea, token=Depends(get_token)):
 
     area_data = area_data.dict()

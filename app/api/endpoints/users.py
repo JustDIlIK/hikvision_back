@@ -13,7 +13,7 @@ from app.db.schemas.users import SUsersAuthLogin
 router = APIRouter(prefix=("/auth"), tags=["Пользователь"])
 
 
-@router.post("/register")
+@router.post("/register/")
 async def register_user(user_data: SUsersAuthLogin):
     existing_user = await UsersDAO.find_one_or_none(email=user_data.email)
     if existing_user:
@@ -26,7 +26,7 @@ async def register_user(user_data: SUsersAuthLogin):
     await UsersDAO.add_record(email=user_data.email, password=user_data.password)
 
 
-@router.post("/login")
+@router.post("/login/")
 async def login_user(response: Response, user_data: SUsersAuthLogin):
     user = await authenticate_user(user_data.email, user_data.password)
     print(user)
@@ -40,12 +40,12 @@ async def login_user(response: Response, user_data: SUsersAuthLogin):
     return access_token
 
 
-@router.post("/logout")
+@router.post("/logout/")
 async def login_user(response: Response):
     response.delete_cookie("token")
 
 
-@router.get("/get-users")
+@router.get("/get-users/")
 async def get_users():
     users = await UsersDAO.get_all()
 

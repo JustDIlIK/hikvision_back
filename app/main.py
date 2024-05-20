@@ -8,6 +8,7 @@ from app.api.responses.admin import (
     DevicesAdmin,
     TgUsersAdmin,
     GroupsAdmin,
+    RecordsAdmin,
 )
 from app.api.endpoints.persons import router as router_person
 from app.api.endpoints.groups import router as router_group
@@ -16,7 +17,7 @@ from app.api.endpoints.users import router as router_user
 from app.api.endpoints.tg_users import router as router_tg_users
 from app.api.endpoints.attendance import router as router_attendance
 from app.api.endpoints.areas import router as router_areas
-
+from app.api.endpoints.heartbeat import router as router_heartbeat
 
 from app.db.connection import engine
 from app.api.services.adminAuth import authentication_backend
@@ -41,6 +42,7 @@ app.include_router(router_user)
 app.include_router(router_tg_users)
 app.include_router(router_areas)
 app.include_router(router_attendance)
+app.include_router(router_heartbeat)
 
 admin = Admin(
     app, engine, authentication_backend=authentication_backend, base_url="/admin/"
@@ -51,6 +53,7 @@ admin.add_view(AreasAdmin)
 admin.add_view(DevicesAdmin)
 admin.add_view(TgUsersAdmin)
 admin.add_view(GroupsAdmin)
+admin.add_view(RecordsAdmin)
 
 
 if __name__ == "__main__":

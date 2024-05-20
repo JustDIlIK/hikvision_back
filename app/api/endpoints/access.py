@@ -100,7 +100,7 @@ async def patch_person_access(
 
 
 @router.get(
-    "/detail/{person_id}",
+    "/detail/{person_id}/",
     summary="Получение информации по группам доступ у конкретного пользователя",
 )
 async def get_person_access_detail(person_id: str, token=Depends(get_token)):

@@ -31,6 +31,7 @@ class SRecordCertificate(BaseModel):
     deviceId: str
     deviceName: str
     snapPicUrl: str
+    snapPicUrl2: str = None
     occurTime: str
     id: str
     fullPath: str

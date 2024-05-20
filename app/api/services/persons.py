@@ -6,6 +6,8 @@ async def find_max_min(person_list: list):
     if len(person_list) < 2:
         person = person_list[0]
         person.time_end = "None"
+        person.snapPicUrl2 = "None"
+
         return person
 
     min_time = datetime.strptime(person_list[0].time, "%H:%M:%S")
@@ -31,5 +33,6 @@ async def find_max_min(person_list: list):
 
     person = person_list[min_time_index]
     person.time_end = person_list[max_time_index].time
+    person.snapPicUrl2 = person_list[max_time_index].snapPicUrl
 
     return person
