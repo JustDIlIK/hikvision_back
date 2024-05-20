@@ -3,7 +3,7 @@ from sqlalchemy.orm import joinedload
 
 from app.db.connection import async_session
 from app.db.dbo import BaseDAO
-from app.db.models.tg import TgUser, Device
+from app.db.models.tg import TgUser, Device, Area
 
 
 class TgUserDAO(BaseDAO):
@@ -15,8 +15,8 @@ class TgUserDAO(BaseDAO):
         async with async_session() as session:
             query = (
                 select(cls.model)
-                .options(joinedload(cls.model.groups))
-                .options(joinedload(cls.model.devices).joinedload(Device.area))
+                .options(joinedload(cls.model.areas).joinedload(Area.groups))
+                .options(joinedload(cls.model.devices))
             )
             result = await session.execute(query)
 
@@ -27,8 +27,8 @@ class TgUserDAO(BaseDAO):
         async with async_session() as session:
             query = (
                 select(cls.model)
-                .options(joinedload(cls.model.groups))
-                .options(joinedload(cls.model.devices).joinedload(Device.area))
+                .options(joinedload(cls.model.areas))
+                .options(joinedload(cls.model.devices).joinedload(Area.devices))
                 .where(cls.model.tg_id == tg_id)
             )
             result = await session.execute(query)

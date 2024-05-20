@@ -19,11 +19,11 @@ user_device_association = Table(
     Column("device_id", Integer, ForeignKey("devices.id"), primary_key=True),
 )
 
-user_group_association = Table(
-    "user_group_association",
+user_area_association = Table(
+    "user_areas_association",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("tg_users.id"), primary_key=True),
-    Column("group_id", Integer, ForeignKey("groups.id"), primary_key=True),
+    Column("area_id", Integer, ForeignKey("areas.id"), primary_key=True),
 )
 
 
@@ -32,6 +32,11 @@ class Area(Base):
 
     name: Mapped[str]
     own_id: Mapped[str]
+
+    users = relationship(
+        "TgUser", secondary=user_area_association, back_populates="areas"
+    )
+    groups = relationship("Group", backref="areas")
 
     def __str__(self):
         return f"{self.name}"
@@ -59,10 +64,7 @@ class Group(Base):
 
     name: Mapped[str]
     own_id: Mapped[str]
-
-    users = relationship(
-        "TgUser", secondary=user_group_association, back_populates="groups"
-    )
+    area_id: Mapped[int] = mapped_column(ForeignKey("areas.id"), nullable=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -74,8 +76,8 @@ class TgUser(Base):
     tg_id: Mapped[str]
     name: Mapped[str]
     role: Mapped[Role]
-    groups = relationship(
-        "Group", secondary=user_group_association, back_populates="users"
+    areas = relationship(
+        "Area", secondary=user_area_association, back_populates="users"
     )
     devices = relationship(
         "Device", secondary=user_device_association, back_populates="users"

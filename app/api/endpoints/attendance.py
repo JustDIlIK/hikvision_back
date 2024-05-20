@@ -43,7 +43,6 @@ async def get_attendance_list(
 
             person_id = person_info["id"]
             person_info = person_info["baseInfo"]
-            print(f"{result=}")
             person_info.update({"id": person_id, "snapPicUrl": snap_pic})
             date, time = result["deviceTime"].split("T")
             person = SRecordCertificate(
