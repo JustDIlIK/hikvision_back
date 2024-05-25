@@ -32,6 +32,7 @@ class Area(Base):
 
     name: Mapped[str]
     own_id: Mapped[str]
+    group_id: Mapped[str] = mapped_column(nullable=True)
 
     users = relationship(
         "TgUser", secondary=user_area_association, back_populates="areas"

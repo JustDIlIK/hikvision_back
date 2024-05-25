@@ -27,8 +27,8 @@ class TgUserDAO(BaseDAO):
         async with async_session() as session:
             query = (
                 select(cls.model)
-                .options(joinedload(cls.model.areas))
-                .options(joinedload(cls.model.devices).joinedload(Area.devices))
+                .options(joinedload(cls.model.areas).joinedload(Area.groups))
+                .options(joinedload(cls.model.devices))
                 .where(cls.model.tg_id == tg_id)
             )
             result = await session.execute(query)

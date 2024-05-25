@@ -1,14 +1,13 @@
 from io import BytesIO
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import Enum
 from starlette.responses import Response
 
 from app.api.services.persons import find_max_min
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
-from app.db.schemas.attendance import SAttendance, SAttendanceRecord, SRecordCertificate
+from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate
 
 import pandas as pd
 
