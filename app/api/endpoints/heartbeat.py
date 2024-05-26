@@ -28,6 +28,8 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
     result_data = []
 
     page_index = 1
+    print(f"{settings.CURRENT_TOKEN=}")
+    is_stop = False
 
     while True:
         data = await hik_requests_helper(
@@ -39,6 +41,7 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 "searchCriteria": record_data,
             },
         )
+        print(page_index)
 
         persons_record = data["data"]["recordList"]
         first_record = None
@@ -52,7 +55,6 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
         count = 0
 
         for person_record in persons_record:
-
             if (
                 person_record["recordGuid"] == last_record.record_id
                 or datetime.strptime(
@@ -60,13 +62,23 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 ).date()
                 != datetime.now().date()
             ):
+
                 if count != 0:
                     await RecordDAO.add_record(record_id=first_record["recordGuid"])
+
+                is_stop = True
+
                 break
 
             date, time = person_record["deviceTime"].split("T")
             person_info = person_record.pop("personInfo")
-            snap_pic = person_record.pop("acsSnapPicList")[0]["snapPicUrl"]
+
+            snap_pic = person_record.pop("acsSnapPicList")
+
+            if len(snap_pic) == 0:
+                continue
+
+            snap_pic = snap_pic[0]["snapPicUrl"]
 
             person_id = person_info["id"]
             person_info = person_info["baseInfo"]
@@ -85,7 +97,9 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
             count += 1
 
-        if page_index * 200 > data["data"]["totalNum"]:
+        page_index += 1
+
+        if page_index * 200 > data["data"]["totalNum"] or is_stop:
             break
 
     return result_data

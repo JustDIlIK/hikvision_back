@@ -35,8 +35,12 @@ async def get_attendance_list(
         )
 
         for result in data["data"]["recordList"]:
+            snap_pic = result.pop("acsSnapPicList")
 
-            snap_pic = result.pop("acsSnapPicList")[0]["snapPicUrl"]
+            if len(snap_pic) == 0:
+                continue
+
+            snap_pic = snap_pic[0]["snapPicUrl"]
 
             person_info = result.pop("personInfo")
 

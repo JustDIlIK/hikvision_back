@@ -6,6 +6,7 @@ from app.core.config import settings
 
 async def get_token():
     print("getting token")
+    print(settings.CURRENT_TOKEN)
     if not settings.CURRENT_TOKEN == "":
         return settings.CURRENT_TOKEN
 
@@ -15,7 +16,7 @@ async def get_token():
         "appKey": settings.APP_KEY,
         "secretKey": settings.SECRET_KEY,
     }
-
+    print(f"{data=}")
     async with AsyncClient() as client:
         try:
             print(data)
