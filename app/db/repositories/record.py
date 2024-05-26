@@ -9,9 +9,13 @@ class RecordDAO(BaseDAO):
     model = Record
 
     @classmethod
-    async def get_last(cls):
+    async def get_last(cls, object_id: str):
 
         async with async_session() as session:
-            query = select(cls.model).order_by(cls.model.id.desc())
+            query = (
+                select(cls.model)
+                .filter_by(object_id=object_id)
+                .order_by(cls.model.id.desc())
+            )
             result = await session.execute(query)
             return result.scalar()

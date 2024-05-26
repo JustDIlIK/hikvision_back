@@ -20,7 +20,7 @@ router = APIRouter(
 async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
     record_data = record_data.dict()
-    last_record = await RecordDAO.get_last()
+    last_record = await RecordDAO.get_last(record_data["object_id"])
 
     if not last_record:
         last_record = Record(record_id="")
@@ -64,7 +64,10 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
             ):
 
                 if count != 0:
-                    await RecordDAO.add_record(record_id=first_record["recordGuid"])
+                    await RecordDAO.add_record(
+                        record_id=first_record["recordGuid"],
+                        object_id=record_data["object_id"],
+                    )
 
                 is_stop = True
 
