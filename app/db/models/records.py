@@ -7,3 +7,4 @@ class Record(Base):
     __tablename__ = "records"
 
     record_id: Mapped[str] = mapped_column(unique=True)
+    object_id: Mapped[str]
