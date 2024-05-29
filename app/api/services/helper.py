@@ -30,7 +30,7 @@ async def hik_requests_helper(url, **kwargs):
                 print(data)
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Ошибка -{data["errorCode"]}- {data["message"]}. Совет: {Person_errors[data["errorCode"]]}",
+                    detail=f"Ошибка -{data["errorCode"]}- {data["message"]}.",
                 )
             return data
         except HTTPStatusError as e:

@@ -1,5 +1,6 @@
 from sqladmin import ModelView
 
+from app.db.models.positions import Position
 from app.db.models.records import Record
 from app.db.models.tg import Area, Device, TgUser, Group
 from app.db.models.users import User
@@ -35,4 +36,9 @@ class GroupsAdmin(ModelView, model=Group):
 
 class RecordsAdmin(ModelView, model=Record):
     column_list = [c.name for c in Record.__table__.c]
+    icon = "fa-solid fa-trophy"
+
+
+class PositionsAdmin(ModelView, model=Position):
+    column_list = [c.name for c in Position.__table__.c]
     icon = "fa-solid fa-trophy"
