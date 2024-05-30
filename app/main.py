@@ -9,6 +9,7 @@ from app.api.responses.admin import (
     TgUsersAdmin,
     GroupsAdmin,
     RecordsAdmin,
+    PositionsAdmin,
 )
 from app.api.endpoints.persons import router as router_person
 from app.api.endpoints.groups import router as router_group
@@ -56,6 +57,7 @@ admin.add_view(DevicesAdmin)
 admin.add_view(TgUsersAdmin)
 admin.add_view(GroupsAdmin)
 admin.add_view(RecordsAdmin)
+admin.add_view(PositionsAdmin)
 
 
 if __name__ == "__main__":

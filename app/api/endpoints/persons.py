@@ -5,6 +5,7 @@ from app.api.dependencies.token import get_token
 from app.api.responses.persons import Person_errors
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
+from app.db.cache import person_cache
 from app.db.schemas.person import (
     SPersonPhotoAdding,
     SPersonAdding,
@@ -20,6 +21,9 @@ router = APIRouter(
 
 @router.get("/", summary="Получение всех пользователей")
 async def get_all_persons(token=Depends(get_token)):
+
+    if not person_cache.need_update:
+        return person_cache.cache
 
     persons = []
     page_index = 1
@@ -37,10 +41,15 @@ async def get_all_persons(token=Depends(get_token)):
         page_index += 1
         person_list = data["data"]["personList"]
 
+        for person in person_list:
+            person_cache.cache[person["personInfo"]["personCode"]] = person
+
         persons.extend(person_list)
 
         if len(data["data"]["personList"]) == 0:
             break
+
+    person_cache.need_update = False
 
     return persons
 
@@ -55,6 +64,8 @@ async def add_person(person: SPersonAdding, token=Depends(get_token)):
         data=person,
     )
 
+    person_cache.need_update = True
+
     return data
 
 
@@ -68,7 +79,7 @@ async def updating_person(person: SPersonPatching, token=Depends(get_token)):
         token=token,
         data=person,
     )
-
+    person_cache.need_update = True
     return JSONResponse(
         content={"detail": "Успешное изменение пользователя"}, status_code=201
     )
@@ -83,7 +94,7 @@ async def delete_person(person: SPersonDetail, token=Depends(get_token)):
         token=token,
         data=person,
     )
-
+    person_cache.need_update = True
     return JSONResponse(
         content={"detail": "Успешное удаление пользователя"}, status_code=201
     )
@@ -113,5 +124,5 @@ async def upload_photo(person_data: SPersonPhotoAdding, token=Depends(get_token)
             "photoData": person_data["photoData"],
         },
     )
-
+    person_cache.need_update = True
     return JSONResponse(content={"detail": "Фото добавлено"}, status_code=201)
