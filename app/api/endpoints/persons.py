@@ -21,10 +21,13 @@ router = APIRouter(
 
 @router.get("/", summary="Получение всех пользователей")
 async def get_all_persons(token=Depends(get_token)):
+    print("Here")
+
     if not person_cache.need_update:
         temp_data = [data for data in person_cache.cache.values()]
         return temp_data
-
+    else:
+        person_cache.cache.clear()
     persons = []
     page_index = 1
 
