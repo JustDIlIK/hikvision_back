@@ -21,9 +21,9 @@ router = APIRouter(
 
 @router.get("/", summary="Получение всех пользователей")
 async def get_all_persons(token=Depends(get_token)):
-
     if not person_cache.need_update:
-        return person_cache.cache
+        temp_data = [data for data in person_cache.cache.values()]
+        return temp_data
 
     persons = []
     page_index = 1
