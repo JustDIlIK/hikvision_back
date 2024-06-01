@@ -27,20 +27,12 @@ user_area_association = Table(
 )
 
 
-class Area(Base):
-    __tablename__ = "areas"
-
-    name: Mapped[str]
-    own_id: Mapped[str]
-    group_id: Mapped[str] = mapped_column(nullable=True)
-
-    users = relationship(
-        "TgUser", secondary=user_area_association, back_populates="areas"
-    )
-    groups = relationship("Group", backref="areas")
-
-    def __str__(self):
-        return f"{self.name}"
+group_area_association = Table(
+    "group_areas_association",
+    Base.metadata,
+    Column("group_id", Integer, ForeignKey("groups.id"), primary_key=True),
+    Column("area_id", Integer, ForeignKey("areas.id"), primary_key=True),
+)
 
 
 class Device(Base):
@@ -60,12 +52,33 @@ class Device(Base):
         return f"{self.name}"
 
 
+class Area(Base):
+    __tablename__ = "areas"
+
+    name: Mapped[str]
+    own_id: Mapped[str]
+    group_id: Mapped[str] = mapped_column(nullable=True)
+
+    users = relationship(
+        "TgUser", secondary=user_area_association, back_populates="areas"
+    )
+    groups = relationship(
+        "Group", secondary=group_area_association, back_populates="areas"
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Group(Base):
     __tablename__ = "groups"
 
     name: Mapped[str]
     own_id: Mapped[str]
-    area_id: Mapped[int] = mapped_column(ForeignKey("areas.id"), nullable=True)
+    # area_id: Mapped[int] = mapped_column(ForeignKey("areas.id"), nullable=True)
+    areas = relationship(
+        "Area", secondary=group_area_association, back_populates="groups"
+    )
 
     def __str__(self):
         return f"{self.name}"

@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
+from app.db.repositories.area import AreaDAO
 from app.db.schemas.area import SArea
 
 router = APIRouter(prefix="/areas", tags=["Объекты и устройства"])
@@ -30,3 +31,11 @@ async def get_areas(area_data: SArea, token=Depends(get_token)):
         devices.append(device)
 
     return devices
+
+
+@router.get("/")
+async def ged_areas(token=Depends(get_token)):
+
+    result = await AreaDAO.get_all()
+
+    return result

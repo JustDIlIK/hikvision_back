@@ -1,6 +1,10 @@
+from datetime import datetime
+
+
 class PersonCache:
     def __init__(self):
         self.cache = {}
+        self.lt = datetime.now()
         self.need_update = True
 
     def get(self):

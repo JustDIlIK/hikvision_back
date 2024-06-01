@@ -76,27 +76,28 @@ async def delete_person_from_access(
     )
 
 
-@router.patch("/", summary="Изменение у пользователя групп доступа")
-async def patch_person_access(
-    person_data: SPersonAccessAdding, delete: bool = False, token=Depends(get_token)
-):
-    person_data = person_data.dict()
-    data = await hik_requests_helper(
-        url=f"{settings.HIKVISION_URL}/api/hccgw/acspm/v1/accesslevel/person/modify",
-        token=token,
-        data={
-            "personList": [
-                {
-                    "personId": person_data["personId"],
-                    "accessLevelIdList": person_data["accessLevelIdList"],
-                    "deleteAll": delete,
-                }
-            ]
-        },
-    )
-    return JSONResponse(
-        content={"detail": "Успешное изменение группы доступа"}, status_code=200
-    )
+# @router.patch("/", summary="Изменение у пользователя групп доступа")
+# async def patch_person_access(
+#     person_data: SPersonAccessAdding, delete: bool = False, token=Depends(get_token)
+# ):
+#     person_data = person_data.dict()
+#     data = await hik_requests_helper(
+#         url=f"{settings.HIKVISION_URL}/api/hccgw/acspm/v1/accesslevel/person/modify",
+#         token=token,
+#         data={
+#             "personList": [
+#                 {
+#                     "personId": person_data["personId"],
+#                     "accessLevelIdList": person_data["accessLevelIdList"],
+#                     "deleteAll": delete,
+#                 }
+#             ]
+#         },
+#     )
+#     return JSONResponse(
+#         content={"detail": "Успешное изменение группы доступа"}, status_code=200
+#     )
+#
 
 
 @router.get(

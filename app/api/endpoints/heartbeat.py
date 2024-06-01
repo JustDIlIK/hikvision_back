@@ -27,8 +27,9 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
     result_data = []
 
+    persons_dict = {}
+
     page_index = 1
-    print(f"{settings.CURRENT_TOKEN=}")
     is_stop = False
 
     while True:
@@ -75,7 +76,6 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
             date, time = person_record["deviceTime"].split("T")
             person_info = person_record.pop("personInfo")
-
             snap_pic = person_record.pop("acsSnapPicList")
 
             if len(snap_pic) == 0:
@@ -87,16 +87,19 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
             person_info = person_info["baseInfo"]
             person_info.update({"id": person_id, "snapPicUrl": snap_pic})
 
-            result_data.append(
-                SRecordCertificate(
-                    **{
-                        **person_info,
-                        **person_record,
-                        "time": time.split("+")[0],
-                        "date": date,
-                    }
-                )
+            record_certificate = SRecordCertificate(
+                **{
+                    **person_info,
+                    **person_record,
+                    "time": time.split("+")[0],
+                    "date": date,
+                }
             )
+
+            if person_info["personCode"] in persons_dict:
+                persons_dict[person_info["personCode"]].append(record_certificate)
+            else:
+                persons_dict[person_info["personCode"]] = [record_certificate]
 
             count += 1
 
@@ -104,5 +107,18 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
         if page_index * 200 > data["data"]["totalNum"] or is_stop:
             break
+
+    for persons in persons_dict.values():
+
+        first_record = persons[0]
+        last_record = persons[-1]
+        if first_record.time != last_record.time and (
+            (
+                datetime.strptime(first_record.time, "%H:%M:%S")
+                - datetime.strptime(last_record.time, "%H:%M:%S")
+            ).total_seconds()
+            > 60
+        ):
+            result_data.extend([first_record, last_record])
 
     return result_data

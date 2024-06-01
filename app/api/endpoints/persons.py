@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends, Body
 from starlette.responses import JSONResponse
 
@@ -21,9 +23,10 @@ router = APIRouter(
 
 @router.get("/", summary="Получение всех пользователей")
 async def get_all_persons(token=Depends(get_token)):
-    print("Here")
-
-    if not person_cache.need_update:
+    if (
+        not person_cache.need_update
+        and (datetime.now() - person_cache.lt).total_seconds() <= 3600
+    ):
         temp_data = [data for data in person_cache.cache.values()]
         return temp_data
     else:
@@ -53,6 +56,7 @@ async def get_all_persons(token=Depends(get_token)):
             break
 
     person_cache.need_update = False
+    person_cache.lt = datetime.now()
 
     return persons
 

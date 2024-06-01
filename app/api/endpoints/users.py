@@ -13,17 +13,17 @@ from app.db.schemas.users import SUsersAuthLogin
 router = APIRouter(prefix=("/auth"), tags=["Пользователь"])
 
 
-@router.post("/register/")
-async def register_user(user_data: SUsersAuthLogin):
-    existing_user = await UsersDAO.find_one_or_none(email=user_data.email)
-    if existing_user:
-        return JSONResponse(
-            status_code=409, content={"detail": "Данная почта уже была использована"}
-        )
-
-    password = get_hashed_password(user_data.password)
-    user_data.password = password
-    await UsersDAO.add_record(email=user_data.email, password=user_data.password)
+# @router.post("/register/")
+# async def register_user(user_data: SUsersAuthLogin):
+#     existing_user = await UsersDAO.find_one_or_none(email=user_data.email)
+#     if existing_user:
+#         return JSONResponse(
+#             status_code=409, content={"detail": "Данная почта уже была использована"}
+#         )
+#
+#     password = get_hashed_password(user_data.password)
+#     user_data.password = password
+#     await UsersDAO.add_record(email=user_data.email, password=user_data.password)
 
 
 @router.post("/login/")

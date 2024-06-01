@@ -114,6 +114,9 @@ async def get_attendance_file(
             "personCode",
             "areaName",
             "deviceName",
+            "photoUrl",
+            "snapPicUrl",
+            "snapPicUrl2",
         ],
         axis=1,
         inplace=True,
@@ -127,9 +130,6 @@ async def get_attendance_file(
         "time",
         "time_end",
         "phoneNum",
-        "photoUrl",
-        "snapPicUrl",
-        "snapPicUrl2",
     ]
 
     df = df[new_order]
@@ -142,9 +142,6 @@ async def get_attendance_file(
         "time": "Время входа",
         "time_end": "Время выхода",
         "phoneNum": "Номер телефона",
-        "photoUrl": "Изображение",
-        "snapPicUrl": "Отметился (Вход)",
-        "snapPicUrl2": "Отметился (Выход)",
     }
 
     df = df.rename(columns=translations)
