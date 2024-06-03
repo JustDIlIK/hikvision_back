@@ -56,6 +56,7 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
         count = 0
 
         for person_record in persons_record:
+
             if (
                 person_record["recordGuid"] == last_record.record_id
                 or datetime.strptime(
@@ -63,7 +64,6 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 ).date()
                 != datetime.now().date()
             ):
-
                 if count != 0:
                     await RecordDAO.add_record(
                         record_id=first_record["recordGuid"],
@@ -98,9 +98,8 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
             if person_info["personCode"] in persons_dict:
                 persons_dict[person_info["personCode"]].append(record_certificate)
-            else:
+            elif person_info["personCode"] != "":
                 persons_dict[person_info["personCode"]] = [record_certificate]
-
             count += 1
 
         page_index += 1
@@ -121,4 +120,4 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
         ):
             result_data.extend([first_record, last_record])
 
-    return result_data
+    return persons_dict

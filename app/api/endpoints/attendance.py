@@ -1,3 +1,5 @@
+from calendar import monthrange
+from datetime import datetime
 from io import BytesIO
 
 from fastapi import APIRouter, Depends
@@ -91,7 +93,9 @@ async def get_attendance_list(
 async def get_attendance_file(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
+
     data = await get_attendance_list(attendance_records, token)
+
     persons_list = []
 
     for date, persons in data.items():
@@ -112,7 +116,6 @@ async def get_attendance_file(
             "occurTime",
             "id",
             "personCode",
-            "areaName",
             "deviceName",
             "photoUrl",
             "snapPicUrl",
@@ -126,6 +129,7 @@ async def get_attendance_file(
         "firstName",
         "lastName",
         "fullPath",
+        "areaName",
         "date",
         "time",
         "time_end",
@@ -133,11 +137,13 @@ async def get_attendance_file(
     ]
 
     df = df[new_order]
+    df["areaName"] = df["areaName"].apply(lambda x: x.split(" - ")[1])
 
     translations = {
         "firstName": "ФИО",
         "lastName": "Должность",
-        "fullPath": "Объект",
+        "fullPath": "Компания",
+        "areaName": "Локация",
         "date": "Дата",
         "time": "Время входа",
         "time_end": "Время выхода",
@@ -160,6 +166,126 @@ async def get_attendance_file(
 
     headers = {
         f"Content-Disposition": f"attachment; filename={first_date}-{second_date}.xlsx; "
+    }
+    return Response(
+        content=output.read(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers=headers,
+    )
+
+
+@router.post("/file2")
+async def get_attendance_file2(
+    attendance_records: SAttendanceRecord, token=Depends(get_token)
+):
+
+    data = await get_attendance_list(attendance_records, token)
+
+    today = datetime.now()
+    days = list(range(1, monthrange(today.year, today.month)[1] + 1))
+
+    df = pd.DataFrame(
+        columns=[
+            "firstName",
+            "lastName",
+            "fullPath",
+            "areaName",
+            "time",
+            "time_end",
+            *days,
+            "worked",
+            "days",
+        ]
+    )
+
+    persons_dict = {}
+
+    for persons in data.values():
+        for person in persons:
+            person = person.model_dump()
+            if person["personCode"] in persons_dict:
+                persons_dict[person["personCode"]].append(person)
+            else:
+                persons_dict[person["personCode"]] = [person]
+
+    for i, (key, value) in enumerate(persons_dict.items()):
+
+        person_series = pd.Series()
+        days_series = pd.Series(data=[0] * 30, index=days)
+
+        person_series["firstName"] = value[0]["firstName"]
+        person_series["lastName"] = value[0]["lastName"]
+        person_series["fullPath"] = value[0]["fullPath"]
+        person_series["areaName"] = value[0]["areaName"].split(" - ")[2]
+
+        person_series = pd.concat([person_series, days_series])
+        person_series["worked"] = 0
+        person_series["days"] = 0
+        sum_hours = 0
+        sum_days = 0
+
+        for index, person in enumerate(value):
+            current_day = int(person["date"].split("-")[2])
+
+            if person["time_end"] != "None":
+
+                time = datetime.strptime(person["time"], "%H:%M:%S")
+                time_end = datetime.strptime(person["time_end"], "%H:%M:%S")
+
+                duration = round(((time_end - time).total_seconds() / 3600), 1)
+
+                if duration > 8:
+                    duration = 8
+                elif duration == 0:
+                    sum_days -= 1
+
+                sum_hours += duration
+
+                person_series[current_day] = duration
+
+            else:
+                person_series[current_day] = 1.5
+                sum_hours += 1.5
+
+            sum_days += 1
+
+        person_series["worked"] = sum_hours
+        person_series["days"] = sum_days
+
+        df = df._append(person_series, ignore_index=True)
+
+    df.index = df.index + 1
+    df.drop(
+        ["time", "time_end"],
+        axis=1,
+        inplace=True,
+    )
+
+    translations = {
+        "firstName": "ФИО",
+        "lastName": "Должность",
+        "fullPath": "Компания",
+        "areaName": "Локация",
+        "worker": "Кол-во часов",
+        "days": "Кол-во дней",
+    }
+    df = df.rename(columns=translations)
+
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        df.to_excel(writer, sheet_name="Расписание", index=False)
+
+    output.seek(0)
+
+    begin_time = attendance_records.model_dump()["searchCriteria"]["beginTime"].split(
+        "T"
+    )[0]
+    end_time = attendance_records.model_dump()["searchCriteria"]["endTime"].split("T")[
+        0
+    ]
+
+    headers = {
+        f"Content-Disposition": f"attachment; filename={begin_time}:{end_time}.xlsx; "
     }
     return Response(
         content=output.read(),
