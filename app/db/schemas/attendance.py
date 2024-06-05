@@ -18,7 +18,6 @@ class SAttendanceRecordCriteria(BaseModel):
 
 
 class SAttendanceRecord(BaseModel):
-    pageIndex: int = 1
     pageSize: int = 200
     searchCriteria: SAttendanceRecordCriteria
 

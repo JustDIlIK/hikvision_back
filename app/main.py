@@ -1,6 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from sqladmin import Admin
+from uvicorn import run
+from uvicorn.supervisors.statreload import StatReload
 
 from app.api.responses.admin import (
     UserAdmin,
@@ -59,6 +61,3 @@ admin.add_view(GroupsAdmin)
 admin.add_view(RecordsAdmin)
 admin.add_view(PositionsAdmin)
 
-
-if __name__ == "__main__":
-    uvicorn.run(app, reload=True)

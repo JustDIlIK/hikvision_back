@@ -36,13 +36,12 @@ async def get_all_persons(token=Depends(get_token)):
 
     while True:
 
-        print(f"{page_index=}")
-
         data = await hik_requests_helper(
             f"{settings.HIKVISION_URL}/api/hccgw/person/v1/persons/list",
             token=token,
             data={"pageIndex": page_index, "pageSize": 100, "filter": {}},
         )
+
 
         page_index += 1
         person_list = data["data"]["personList"]

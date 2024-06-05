@@ -11,12 +11,12 @@ async def hik_requests_helper(url, **kwargs):
     print("hik_requests_helper called")
     async with AsyncClient() as client:
         try:
-            print(kwargs["data"])
-            print(url)
+            # print(kwargs["data"])
+            # print(url)
             response = await client.post(
                 url=url, headers={"Token": kwargs["token"]}, json=kwargs["data"]
             )
-            print(f"{kwargs["data"]=}")
+            # print(f"{kwargs['data']=}")
 
             response.raise_for_status()
 
@@ -27,10 +27,10 @@ async def hik_requests_helper(url, **kwargs):
                     url, token=settings.CURRENT_TOKEN, data=kwargs["data"]
                 )
             elif data["errorCode"] != "0":
-                print(data)
+                # print(data)
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Ошибка -{data["errorCode"]}- {data["message"]}.",
+                    detail=f"Ошибка -{data['errorCode']}- {data['message']}.",
                 )
             return data
         except HTTPStatusError as e:
@@ -41,4 +41,6 @@ async def hik_requests_helper(url, **kwargs):
                 },
             )
         except RequestError as e:
+            print(e)
+            print("e")
             raise HTTPException(status_code=500, detail=f"Ошибка с сервером API: {e}")

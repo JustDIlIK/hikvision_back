@@ -23,18 +23,24 @@ async def get_attendance_list(
 
     attendance_records = attendance_records.dict()
     result_data = {}
-    page_index = attendance_records["pageIndex"]
-
+    page_index = 1
+    print(attendance_records)
     while True:
+        print(f"{page_index=}")
+
         data = await hik_requests_helper(
             url=f"{settings.HIKVISION_URL}/api/hccgw/acs/v1/event/certificaterecords/search",
             token=token,
             data={
                 "pageIndex": page_index,
-                "pageSize": attendance_records["pageSize"],
+                "pageSize": 200,
                 **attendance_records,
             },
         )
+
+        print(f'{data["data"]["totalNum"]=}')
+        print(f'{data["data"]["pageIndex"]=}')
+        print(f'{data["data"]["pageSize"]=}')
 
         for result in data["data"]["recordList"]:
             snap_pic = result.pop("acsSnapPicList")
@@ -50,15 +56,19 @@ async def get_attendance_list(
             person_info = person_info["baseInfo"]
             person_info.update({"id": person_id, "snapPicUrl": snap_pic})
             date, time = result["deviceTime"].split("T")
+
             person = SRecordCertificate(
                 **{**person_info, **result, "time": time.split("+")[0], "date": date}
             )
 
             if person_id == "":
                 continue
-
             if person.photoUrl == "":
                 person.photoUrl = "Убран с базы"
+
+            if person.firstName == "Davronov Temurbek Bobomurod ogli":
+                print(person.firstName)
+                print(person.time)
 
             if date in result_data:
 
@@ -71,6 +81,7 @@ async def get_attendance_list(
 
         if data["data"]["totalNum"] < page_index * attendance_records["pageSize"]:
             break
+
         page_index += 1
 
     # Ищем уникальные (First and Last)
@@ -80,7 +91,6 @@ async def get_attendance_list(
     for date, persons in result_data.items():
         for person_id, person in persons.items():
             person_data = await find_max_min(person)
-
             if date in persons_list:
                 persons_list[date].append(person_data)
             else:
@@ -216,7 +226,8 @@ async def get_attendance_file2(
         person_series["firstName"] = value[0]["firstName"]
         person_series["lastName"] = value[0]["lastName"]
         person_series["fullPath"] = value[0]["fullPath"]
-        person_series["areaName"] = value[0]["areaName"].split(" - ")[2]
+
+        person_series["areaName"] = value[0]["areaName"].split(" - ")[1]
 
         person_series = pd.concat([person_series, days_series])
         person_series["worked"] = 0
@@ -230,6 +241,10 @@ async def get_attendance_file2(
             if person["time_end"] != "None":
 
                 time = datetime.strptime(person["time"], "%H:%M:%S")
+
+                if time.hour < 9 and person_series["areaName"] == "Офис":
+                    time = time.replace(hour=9)
+
                 time_end = datetime.strptime(person["time_end"], "%H:%M:%S")
 
                 duration = round(((time_end - time).total_seconds() / 3600), 1)
