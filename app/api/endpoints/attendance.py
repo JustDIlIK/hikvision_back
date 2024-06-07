@@ -216,7 +216,6 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
             for person in persons:
                 person = person.model_dump()
                 if person["personCode"] in persons_dict:
-                    print(person)
                     persons_dict[person["personCode"]].append(person)
                 else:
                     persons_dict[person["personCode"]] = [person]
