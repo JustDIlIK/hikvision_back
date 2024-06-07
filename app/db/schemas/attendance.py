@@ -42,3 +42,7 @@ class SRecordCertificate(BaseModel):
     time: str
     date: str
     time_end: str = None
+
+
+class SReportCard(BaseModel):
+    date: str = "2024-06"

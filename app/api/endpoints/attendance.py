@@ -5,11 +5,13 @@ from io import BytesIO
 from fastapi import APIRouter, Depends
 from starlette.responses import Response
 
+from app.api.endpoints.areas import get_areas
 from app.api.services.persons import find_max_min
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
-from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate
+from app.db.schemas.area import SArea
+from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate, SReportCard
 
 import pandas as pd
 
@@ -18,9 +20,8 @@ router = APIRouter(prefix="/attendance", tags=["Расписание"])
 
 @router.post("/", summary="Получение данных по посещаемости")
 async def get_attendance_list(
-    attendance_records: SAttendanceRecord, token=Depends(get_token)
+        attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
-
     attendance_records = attendance_records.dict()
     result_data = {}
     page_index = 1
@@ -101,9 +102,8 @@ async def get_attendance_list(
 
 @router.post("/file/", summary="Получение данных по посещаемости (файл)")
 async def get_attendance_file(
-    attendance_records: SAttendanceRecord, token=Depends(get_token)
+        attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
-
     data = await get_attendance_list(attendance_records, token)
 
     persons_list = []
@@ -185,15 +185,44 @@ async def get_attendance_file(
 
 
 @router.post("/file2")
-async def get_attendance_file2(
-    attendance_records: SAttendanceRecord, token=Depends(get_token)
-):
+async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
+                               ):
+    area_data = SArea.parse_obj({
+        "pageIndex": 1,
+        "pageSize": 500,
+        "filter": {
+            "includeSubArea": 1
+        }
+    })
 
-    data = await get_attendance_list(attendance_records, token)
+    areas = await get_areas(area_data, token)
+    persons_dict = {}
 
-    today = datetime.now()
+    for area in areas:
+        data = await get_attendance_list(SAttendanceRecord.parse_obj(
+            {
+                "pageSize": 200,
+                "searchCriteria": {
+                    "beginTime": f"{month_data.date}-01T00:00:00+05:00",
+                    "endTime": f"{month_data.date}-31T23:59:59+05:00",
+                    "eventTypes": "110013",
+
+                    "elementIDs": area["id"]
+                }
+            }
+        ), token)
+
+        for persons in data.values():
+            for person in persons:
+                person = person.model_dump()
+                if person["personCode"] in persons_dict:
+                    print(person)
+                    persons_dict[person["personCode"]].append(person)
+                else:
+                    persons_dict[person["personCode"]] = [person]
+
+    today = datetime.strptime(month_data.date, "%Y-%m")
     days = list(range(1, monthrange(today.year, today.month)[1] + 1))
-
     df = pd.DataFrame(
         columns=[
             "firstName",
@@ -207,16 +236,6 @@ async def get_attendance_file2(
             "days",
         ]
     )
-
-    persons_dict = {}
-
-    for persons in data.values():
-        for person in persons:
-            person = person.model_dump()
-            if person["personCode"] in persons_dict:
-                persons_dict[person["personCode"]].append(person)
-            else:
-                persons_dict[person["personCode"]] = [person]
 
     for i, (key, value) in enumerate(persons_dict.items()):
 
@@ -292,15 +311,8 @@ async def get_attendance_file2(
 
     output.seek(0)
 
-    begin_time = attendance_records.model_dump()["searchCriteria"]["beginTime"].split(
-        "T"
-    )[0]
-    end_time = attendance_records.model_dump()["searchCriteria"]["endTime"].split("T")[
-        0
-    ]
-
     headers = {
-        f"Content-Disposition": f"attachment; filename={begin_time}:{end_time}.xlsx; "
+        f"Content-Disposition": f"attachment; filename={month_data.date}.xlsx; "
     }
     return Response(
         content=output.read(),
