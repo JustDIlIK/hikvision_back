@@ -20,7 +20,7 @@ router = APIRouter(prefix="/attendance", tags=["Расписание"])
 
 @router.post("/", summary="Получение данных по посещаемости")
 async def get_attendance_list(
-        attendance_records: SAttendanceRecord, token=Depends(get_token)
+    attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
     attendance_records = attendance_records.dict()
     result_data = {}
@@ -102,7 +102,7 @@ async def get_attendance_list(
 
 @router.post("/file/", summary="Получение данных по посещаемости (файл)")
 async def get_attendance_file(
-        attendance_records: SAttendanceRecord, token=Depends(get_token)
+    attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
     data = await get_attendance_list(attendance_records, token)
 
@@ -184,33 +184,30 @@ async def get_attendance_file(
     )
 
 
-@router.post("/file2")
-async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
-                               ):
-    area_data = SArea.parse_obj({
-        "pageIndex": 1,
-        "pageSize": 500,
-        "filter": {
-            "includeSubArea": 1
-        }
-    })
+@router.post("/file2", summary="Получение отчета в виде табеля")
+async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)):
+    area_data = SArea.parse_obj(
+        {"pageIndex": 1, "pageSize": 500, "filter": {"includeSubArea": 1}}
+    )
 
     areas = await get_areas(area_data, token)
     persons_dict = {}
 
     for area in areas:
-        data = await get_attendance_list(SAttendanceRecord.parse_obj(
-            {
-                "pageSize": 200,
-                "searchCriteria": {
-                    "beginTime": f"{month_data.date}-01T00:00:00+05:00",
-                    "endTime": f"{month_data.date}-31T23:59:59+05:00",
-                    "eventTypes": "110013",
-
-                    "elementIDs": area["id"]
+        data = await get_attendance_list(
+            SAttendanceRecord.parse_obj(
+                {
+                    "pageSize": 200,
+                    "searchCriteria": {
+                        "beginTime": f"{month_data.date}-01T00:00:00+05:00",
+                        "endTime": f"{month_data.date}-31T23:59:59+05:00",
+                        "eventTypes": "110013",
+                        "elementIDs": area["id"],
+                    },
                 }
-            }
-        ), token)
+            ),
+            token,
+        )
 
         for persons in data.values():
             for person in persons:
@@ -237,7 +234,6 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
     )
 
     for i, (key, value) in enumerate(persons_dict.items()):
-
         person_series = pd.Series()
         days_series = pd.Series(data=[0] * 30, index=days)
 
@@ -274,10 +270,10 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
 
                 sum_hours += duration
 
-                person_series[current_day] = duration
+                person_series[current_day] += duration
 
             else:
-                person_series[current_day] = 1.5
+                person_series[current_day] += 1.5
                 sum_hours += 1.5
 
             sum_days += 1
@@ -293,13 +289,13 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
         axis=1,
         inplace=True,
     )
-
+    df = df.sort_values(by=["areaName", "fullPath", "lastName", "firstName"])
     translations = {
         "firstName": "ФИО",
         "lastName": "Должность",
         "fullPath": "Компания",
         "areaName": "Локация",
-        "worker": "Кол-во часов",
+        "worked": "Кол-во часов",
         "days": "Кол-во дней",
     }
     df = df.rename(columns=translations)
@@ -310,9 +306,7 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
 
     output.seek(0)
 
-    headers = {
-        f"Content-Disposition": f"attachment; filename={month_data.date}.xlsx; "
-    }
+    headers = {f"Content-Disposition": f"attachment; filename={month_data.date}.xlsx; "}
     return Response(
         content=output.read(),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

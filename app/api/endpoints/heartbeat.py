@@ -42,7 +42,6 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 "searchCriteria": record_data,
             },
         )
-        print(page_index)
 
         persons_record = data["data"]["recordList"]
         first_record = None
@@ -64,6 +63,12 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 ).date()
                 != datetime.now().date()
             ):
+                print(f"{datetime.now().date()=}")
+                print(
+                    f"{datetime.strptime(person_record["deviceTime"].split("T")[0], "%Y-%m-%d").date()=}"
+                )
+                print(f"{person_record["recordGuid"]=}")
+                print(f"{last_record.record_id=}")
                 if count != 0:
                     await RecordDAO.add_record(
                         record_id=first_record["recordGuid"],

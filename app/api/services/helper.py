@@ -11,12 +11,10 @@ async def hik_requests_helper(url, **kwargs):
     print("hik_requests_helper called")
     async with AsyncClient() as client:
         try:
-            # print(kwargs["data"])
-            # print(url)
             response = await client.post(
                 url=url, headers={"Token": kwargs["token"]}, json=kwargs["data"]
             )
-            # print(f"{kwargs['data']=}")
+            print(response)
 
             response.raise_for_status()
 
