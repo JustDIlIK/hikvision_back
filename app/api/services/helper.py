@@ -5,6 +5,7 @@ from starlette.responses import JSONResponse
 from app.api.dependencies.token import get_token
 from app.api.responses.persons import Person_errors
 from app.core.config import settings
+from app.db.cache import attendance_cache
 
 
 async def hik_requests_helper(url, **kwargs):
@@ -41,4 +42,8 @@ async def hik_requests_helper(url, **kwargs):
         except RequestError as e:
             print(e)
             print("e")
+            attendance_cache.cache = {}
+            attendance_cache.date_status = {}
+            attendance_cache.time_status = {}
+
             raise HTTPException(status_code=500, detail=f"Ошибка с сервером API: {e}")

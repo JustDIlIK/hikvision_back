@@ -69,10 +69,6 @@ async def get_attendance_list(
             if person.photoUrl == "":
                 person.photoUrl = "Убран с базы"
 
-            if person.firstName == "Davronov Temurbek Bobomurod ogli":
-                print(person.firstName)
-                print(person.time)
-
             if date in result_data:
 
                 if person_id in result_data[date]:
@@ -214,6 +210,7 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 
         for persons in data.values():
             for person in persons:
+
                 person = person.model_dump()
                 if person["personCode"] in persons_dict:
                     persons_dict[person["personCode"]].append(person)
@@ -227,7 +224,9 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
     persons_dict = {}
-
+    print(f"{datetime.now()=}")
+    print(f"{attendance_cache.lt=}")
+    print(f"{(datetime.now() - attendance_cache.lt).total_seconds()=}")
     if (
         month_data.date in attendance_cache.cache
         and (datetime.now() - attendance_cache.lt).total_seconds() < 600
@@ -235,7 +234,10 @@ async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_
         persons_dict = attendance_cache.cache[month_data.date]
     elif month_data.date in attendance_cache.date_status:
         if attendance_cache.date_status[month_data.date] == "Progress":
-            return JSONResponse(content="Данные еще не готовы", status_code=206)
+            return JSONResponse(
+                content=f"Данные еще не готовы!",
+                status_code=206,
+            )
     else:
         attendance_cache.date_status[month_data.date] = "Progress"
         asyncio.create_task(get_attendance_list_reports(month_data, token))
@@ -261,7 +263,7 @@ async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_
 
     for i, (key, value) in enumerate(persons_dict.items()):
         person_series = pd.Series()
-        days_series = pd.Series(data=[0] * 30, index=days)
+        days_series = pd.Series(data=[0] * len(days), index=days)
 
         person_series["firstName"] = value[0]["firstName"]
         person_series["lastName"] = value[0]["lastName"]
