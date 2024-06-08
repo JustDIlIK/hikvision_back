@@ -1,15 +1,17 @@
+import asyncio
 from calendar import monthrange
 from datetime import datetime
 from io import BytesIO
 
 from fastapi import APIRouter, Depends
-from starlette.responses import Response
+from starlette.responses import Response, JSONResponse
 
 from app.api.endpoints.areas import get_areas
 from app.api.services.persons import find_max_min
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
+from app.db.cache import attendance_cache
 from app.db.schemas.area import SArea
 from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate, SReportCard
 
@@ -82,6 +84,8 @@ async def get_attendance_list(
 
         if data["data"]["totalNum"] < page_index * attendance_records["pageSize"]:
             break
+        else:
+            await asyncio.sleep(1.5)
 
         page_index += 1
 
@@ -184,8 +188,7 @@ async def get_attendance_file(
     )
 
 
-@router.post("/file2", summary="Получение отчета в виде табеля")
-async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)):
+async def get_attendance_list_reports(month_data: SReportCard, token):
     area_data = SArea.parse_obj(
         {"pageIndex": 1, "pageSize": 500, "filter": {"includeSubArea": 1}}
     )
@@ -217,7 +220,30 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
                 else:
                     persons_dict[person["personCode"]] = [person]
 
+    attendance_cache.cache[month_data.date] = persons_dict
+    attendance_cache.date_status[month_data.date] = "Finish"
+
+
+@router.post("/report-card", summary="Получение данных в виде табеля")
+async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
+    persons_dict = {}
+
+    if (
+        month_data.date in attendance_cache.cache
+        and (datetime.now() - attendance_cache.lt).total_seconds() < 600
+    ):
+        persons_dict = attendance_cache.cache[month_data.date]
+    elif month_data.date in attendance_cache.date_status:
+        if attendance_cache.date_status[month_data.date] == "Progress":
+            return JSONResponse(content="Данные еще не готовы", status_code=206)
+    else:
+        attendance_cache.date_status[month_data.date] = "Progress"
+        asyncio.create_task(get_attendance_list_reports(month_data, token))
+        attendance_cache.lt = datetime.now()
+        return JSONResponse(content="Запрос принят на исполнение", status_code=201)
+
     today = datetime.strptime(month_data.date, "%Y-%m")
+
     days = list(range(1, monthrange(today.year, today.month)[1] + 1))
     df = pd.DataFrame(
         columns=[
@@ -307,6 +333,7 @@ async def get_attendance_file2(month_data: SReportCard, token=Depends(get_token)
     output.seek(0)
 
     headers = {f"Content-Disposition": f"attachment; filename={month_data.date}.xlsx; "}
+
     return Response(
         content=output.read(),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

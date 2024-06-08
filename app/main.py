@@ -60,4 +60,3 @@ admin.add_view(TgUsersAdmin)
 admin.add_view(GroupsAdmin)
 admin.add_view(RecordsAdmin)
 admin.add_view(PositionsAdmin)
-
