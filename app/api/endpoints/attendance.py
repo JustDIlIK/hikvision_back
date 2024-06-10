@@ -201,7 +201,7 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
                         "beginTime": f"{month_data.date}-01T00:00:00+05:00",
                         "endTime": f"{month_data.date}-31T23:59:59+05:00",
                         "eventTypes": "110013",
-                        "elementIDs": area["area"]["id"],
+                        "elementIDs": area["id"],
                     },
                 }
             ),
@@ -216,7 +216,6 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
                     persons_dict[person["personCode"]].append(person)
                 else:
                     persons_dict[person["personCode"]] = [person]
-        break
     attendance_cache.cache[month_data.date] = persons_dict
     attendance_cache.date_status[month_data.date] = "Finish"
 
