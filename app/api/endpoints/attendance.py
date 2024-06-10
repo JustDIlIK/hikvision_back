@@ -11,7 +11,7 @@ from app.api.services.persons import find_max_min
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
-from app.db.cache import attendance_cache
+from app.db.cache import attendance_cache, attendance_file_cache
 from app.db.schemas.area import SArea
 from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate, SReportCard
 
@@ -96,15 +96,48 @@ async def get_attendance_list(
                 persons_list[date].append(person_data)
             else:
                 persons_list[date] = [person_data]
-
+    print("Collecting Records Finished")
     return persons_list
+
+
+async def get_attendance_list_file(
+    attendance_records: SAttendanceRecord, token: str, all_time: str
+):
+
+    data = await get_attendance_list(attendance_records, token)
+
+    attendance_file_cache.cache[all_time] = data
+    attendance_file_cache.date_status[all_time] = "Finished"
 
 
 @router.post("/file/", summary="Получение данных по посещаемости (файл)")
 async def get_attendance_file(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
-    data = await get_attendance_list(attendance_records, token)
+    print(attendance_records.searchCriteria.beginTime)
+    all_time = str(
+        attendance_records.searchCriteria.beginTime
+        + attendance_records.searchCriteria.endTime
+    )
+
+    if (
+        all_time in attendance_file_cache.cache
+        and (datetime.now() - attendance_file_cache.lt).total_seconds() < 600
+    ):
+        data = attendance_file_cache.cache[all_time]
+    elif all_time in attendance_file_cache.date_status:
+        if attendance_file_cache.date_status[all_time] == "Progress":
+            return JSONResponse(
+                content=f"Данные еще не готовы!",
+                status_code=206,
+            )
+    else:
+        attendance_file_cache.date_status[all_time] = "Progress"
+        asyncio.create_task(
+            get_attendance_list_file(attendance_records, token, all_time)
+        )
+        attendance_file_cache.lt = datetime.now()
+        return JSONResponse(content="Запрос принят на исполнение", status_code=201)
 
     persons_list = []
 
@@ -223,9 +256,6 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
     persons_dict = {}
-    print(f"{datetime.now()=}")
-    print(f"{attendance_cache.lt=}")
-    print(f"{(datetime.now() - attendance_cache.lt).total_seconds()=}")
     if (
         month_data.date in attendance_cache.cache
         and (datetime.now() - attendance_cache.lt).total_seconds() < 600
