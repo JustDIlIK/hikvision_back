@@ -20,8 +20,6 @@ async def find_max_min(person_list: list):
 
     for person in person_list:
 
-        # if person.firstName == "Davronov Temurbek Bobomurod ogli":
-        #     print(person)
         current_time = datetime.strptime(person.time, "%H:%M:%S")
 
         if current_time < min_time:

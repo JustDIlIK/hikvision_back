@@ -201,7 +201,7 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
                         "beginTime": f"{month_data.date}-01T00:00:00+05:00",
                         "endTime": f"{month_data.date}-31T23:59:59+05:00",
                         "eventTypes": "110013",
-                        "elementIDs": area["id"],
+                        "elementIDs": "1d9196f3aa524e9896c951ed21b83b5b",
                     },
                 }
             ),
@@ -216,7 +216,7 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
                     persons_dict[person["personCode"]].append(person)
                 else:
                     persons_dict[person["personCode"]] = [person]
-
+        break
     attendance_cache.cache[month_data.date] = persons_dict
     attendance_cache.date_status[month_data.date] = "Finish"
 
@@ -224,9 +224,6 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
     persons_dict = {}
-    print(f"{datetime.now()=}")
-    print(f"{attendance_cache.lt=}")
-    print(f"{(datetime.now() - attendance_cache.lt).total_seconds()=}")
     if (
         month_data.date in attendance_cache.cache
         and (datetime.now() - attendance_cache.lt).total_seconds() < 600
@@ -290,11 +287,12 @@ async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_
                 time_end = datetime.strptime(person["time_end"], "%H:%M:%S")
 
                 duration = round(((time_end - time).total_seconds() / 3600), 1)
-
                 if duration > 8:
                     duration = 8
                 elif duration == 0:
                     sum_days -= 1
+                elif duration < 0:
+                    duration = 1.5
 
                 sum_hours += duration
 
