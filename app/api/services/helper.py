@@ -9,13 +9,12 @@ from app.db.cache import attendance_cache
 
 
 async def hik_requests_helper(url, **kwargs):
-    print("hik_requests_helper called")
+
     async with AsyncClient() as client:
         try:
             response = await client.post(
                 url=url, headers={"Token": kwargs["token"]}, json=kwargs["data"]
             )
-            print(response)
 
             response.raise_for_status()
 
@@ -26,7 +25,7 @@ async def hik_requests_helper(url, **kwargs):
                     url, token=settings.CURRENT_TOKEN, data=kwargs["data"]
                 )
             elif data["errorCode"] != "0":
-                # print(data)
+
                 raise HTTPException(
                     status_code=400,
                     detail=f"Ошибка -{data['errorCode']}- {data['message']}.",
@@ -40,8 +39,7 @@ async def hik_requests_helper(url, **kwargs):
                 },
             )
         except RequestError as e:
-            print(e)
-            print("e")
+
             attendance_cache.cache = {}
             attendance_cache.date_status = {}
             attendance_cache.time_status = {}

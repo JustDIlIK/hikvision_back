@@ -11,7 +11,7 @@ from app.api.services.persons import find_max_min
 from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
-from app.db.cache import attendance_cache, attendance_file_cache
+from app.db.cache import attendance_cache
 from app.db.schemas.area import SArea
 from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate, SReportCard
 
@@ -20,16 +20,15 @@ import pandas as pd
 router = APIRouter(prefix="/attendance", tags=["Расписание"])
 
 
-@router.post("/", summary="Получение данных по посещаемости")
-async def get_attendance_list(
-    attendance_records: SAttendanceRecord, token=Depends(get_token)
+async def get_attendance_records(
+    attendance_records: SAttendanceRecord, token: str, all_time: str
 ):
+
     attendance_records = attendance_records.dict()
     result_data = {}
     page_index = 1
-    print(attendance_records)
+
     while True:
-        print(f"{page_index=}")
 
         data = await hik_requests_helper(
             url=f"{settings.HIKVISION_URL}/api/hccgw/acs/v1/event/certificaterecords/search",
@@ -40,11 +39,8 @@ async def get_attendance_list(
                 **attendance_records,
             },
         )
-
-        print(f'{data["data"]["totalNum"]=}')
-        print(f'{data["data"]["pageIndex"]=}')
-        print(f'{data["data"]["pageSize"]=}')
-
+        print(f"{data["data"]["totalNum"]=}")
+        print(f"{page_index=}")
         for result in data["data"]["recordList"]:
             snap_pic = result.pop("acsSnapPicList")
 
@@ -85,65 +81,86 @@ async def get_attendance_list(
 
         page_index += 1
 
-    # Ищем уникальные (First and Last)
-
     persons_list = {}
-
     for date, persons in result_data.items():
         for person_id, person in persons.items():
             person_data = await find_max_min(person)
+            person_data = person_data.model_dump()
+
             if date in persons_list:
                 persons_list[date].append(person_data)
             else:
                 persons_list[date] = [person_data]
-    print("Collecting Records Finished")
-    return persons_list
+
+    attendance_cache.cache[all_time] = persons_list
+    attendance_cache.status[all_time] = "Finished"
 
 
-async def get_attendance_list_file(
+async def get_from_cache(
     attendance_records: SAttendanceRecord, token: str, all_time: str
 ):
+    if (
+        all_time in attendance_cache.cache
+        and (datetime.now() - attendance_cache.lt).total_seconds() < 600
+    ):
+        return {
+            "content": attendance_cache.cache[all_time],
+            "status_code": 200,
+        }
 
-    data = await get_attendance_list(attendance_records, token)
+    elif all_time in attendance_cache.status:
+        if attendance_cache.status[all_time] == "Progress":
+            return {
+                "content": f"Данные еще не готовы!",
+                "status_code": 206,
+            }
+    else:
+        attendance_cache.status[all_time] = "Progress"
+        asyncio.create_task(get_attendance_records(attendance_records, token, all_time))
+        attendance_cache.lt = datetime.now()
+        return {
+            "content": "Запрос принят на исполнение",
+            "status_code": 201,
+        }
 
-    attendance_file_cache.cache[all_time] = data
-    attendance_file_cache.date_status[all_time] = "Finished"
+
+@router.post("/", summary="Получение данных по посещаемости")
+async def get_attendance_list(
+    attendance_records: SAttendanceRecord, token=Depends(get_token)
+):
+    all_time = str(
+        attendance_records.searchCriteria.beginTime
+        + attendance_records.searchCriteria.endTime
+    )
+
+    result = await get_from_cache(attendance_records, token, all_time)
+
+    return JSONResponse(**result)
 
 
 @router.post("/file/", summary="Получение данных по посещаемости (файл)")
 async def get_attendance_file(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
-    print(attendance_records.searchCriteria.beginTime)
+
     all_time = str(
         attendance_records.searchCriteria.beginTime
         + attendance_records.searchCriteria.endTime
     )
 
-    if (
-        all_time in attendance_file_cache.cache
-        and (datetime.now() - attendance_file_cache.lt).total_seconds() < 600
-    ):
-        data = attendance_file_cache.cache[all_time]
-    elif all_time in attendance_file_cache.date_status:
-        if attendance_file_cache.date_status[all_time] == "Progress":
-            return JSONResponse(
-                content=f"Данные еще не готовы!",
-                status_code=206,
-            )
-    else:
-        attendance_file_cache.date_status[all_time] = "Progress"
-        asyncio.create_task(
-            get_attendance_list_file(attendance_records, token, all_time)
-        )
-        attendance_file_cache.lt = datetime.now()
-        return JSONResponse(content="Запрос принят на исполнение", status_code=201)
+    data = await get_from_cache(attendance_records, token, all_time)
+
+    if data["status_code"] != 200:
+        return JSONResponse(**data)
+
+    data = data["content"]
 
     persons_list = []
 
     for date, persons in data.items():
         for person in persons:
-            persons_list.append(person.model_dump())
+            print(person)
+            persons_list.append(person)
 
     df = pd.DataFrame(persons_list)
 
@@ -224,9 +241,9 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 
     areas = await get_areas(area_data, token)
     persons_dict = {}
-
+    print(area_data)
     for area in areas:
-        data = await get_attendance_list(
+        await get_attendance_records(
             SAttendanceRecord.parse_obj(
                 {
                     "pageSize": 200,
@@ -239,38 +256,43 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
                 }
             ),
             token,
+            month_data.date,
         )
+        data = attendance_cache.cache[month_data.date]
 
         for persons in data.values():
             for person in persons:
 
-                person = person.model_dump()
+                person = person
                 if person["personCode"] in persons_dict:
                     persons_dict[person["personCode"]].append(person)
                 else:
                     persons_dict[person["personCode"]] = [person]
+
     attendance_cache.cache[month_data.date] = persons_dict
-    attendance_cache.date_status[month_data.date] = "Finish"
+    attendance_cache.status[month_data.date] = "Finish Report"
 
 
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
-    persons_dict = {}
+
     if (
         month_data.date in attendance_cache.cache
         and (datetime.now() - attendance_cache.lt).total_seconds() < 600
+        and attendance_cache.status[month_data.date] == "Finish Report"
     ):
         persons_dict = attendance_cache.cache[month_data.date]
-    elif month_data.date in attendance_cache.date_status:
-        if attendance_cache.date_status[month_data.date] == "Progress":
+    elif month_data.date in attendance_cache.status:
+        if attendance_cache.status[month_data.date] != "Finish Report":
             return JSONResponse(
                 content=f"Данные еще не готовы!",
                 status_code=206,
             )
     else:
-        attendance_cache.date_status[month_data.date] = "Progress"
+        attendance_cache.status[month_data.date] = "Progress"
         asyncio.create_task(get_attendance_list_reports(month_data, token))
         attendance_cache.lt = datetime.now()
+
         return JSONResponse(content="Запрос принят на исполнение", status_code=201)
 
     today = datetime.strptime(month_data.date, "%Y-%m")

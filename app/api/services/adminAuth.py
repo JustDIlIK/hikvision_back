@@ -28,7 +28,7 @@ class AdminAuth(AuthenticationBackend):
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
         token = request.session.get("token")
-        print(f"{token=}")
+
         if not token:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
 

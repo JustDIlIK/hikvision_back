@@ -12,7 +12,6 @@ router = APIRouter(
 
 @router.get("/", summary="Получение всех групп")
 async def get_groups(token=Depends(get_token), parent_group_id: str = ""):
-    print("get_groups called")
 
     data = await hik_requests_helper(
         url=f"{settings.HIKVISION_URL}/api/hccgw/person/v1/groups/search",

@@ -1,8 +1,5 @@
-import uvicorn
 from fastapi import FastAPI
 from sqladmin import Admin
-from uvicorn import run
-from uvicorn.supervisors.statreload import StatReload
 
 from app.api.responses.admin import (
     UserAdmin,
@@ -25,6 +22,7 @@ from app.api.endpoints.positions import router as router_position
 
 from app.db.connection import engine
 from app.api.services.adminAuth import authentication_backend
+
 
 app = FastAPI(
     title="Работа с Hikvision",

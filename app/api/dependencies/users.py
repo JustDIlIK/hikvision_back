@@ -10,7 +10,7 @@ from app.db.repositories.users import UsersDAO
 
 def get_token(request: Request):
     token = request.cookies.get("session")
-    print(token)
+
     if not token:
         return JSONResponse(
             status_code=401, content={"detail": "Токен отсутствует"}
@@ -37,7 +37,7 @@ async def get_current_user(token: str = Depends(get_token)):
         return HTTPException(
             status_code=401, detail="Неверный логин или пароль"
         )
-    print("Here")
+
     user = await UsersDAO.find_by_id(int(user_id))
-    print(user)
+
     return user

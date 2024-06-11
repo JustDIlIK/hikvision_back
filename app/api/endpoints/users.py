@@ -29,7 +29,7 @@ router = APIRouter(prefix=("/auth"), tags=["Пользователь"])
 @router.post("/login/")
 async def login_user(response: Response, user_data: SUsersAuthLogin):
     user = await authenticate_user(user_data.email, user_data.password)
-    print(user)
+
     if not user:
         return JSONResponse(
             status_code=401, content={"detail": "Неверный логин или пароль"}

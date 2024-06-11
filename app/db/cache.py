@@ -21,15 +21,8 @@ class PersonCache(BaseCache):
 class AttendanceCache(BaseCache):
     def __init__(self):
         super().__init__()
-        self.date_status = {}
-
-
-class AttendanceFileCache(BaseCache):
-    def __init__(self):
-        super().__init__()
-        self.date_status = {}
+        self.status = {}
 
 
 person_cache = PersonCache()
 attendance_cache = AttendanceCache()
-attendance_file_cache = AttendanceFileCache()
