@@ -131,10 +131,11 @@ async def get_attendance_list(
     all_time = str(
         attendance_records.searchCriteria.beginTime
         + attendance_records.searchCriteria.endTime
+        + attendance_records.searchCriteria.elementIDs
     )
 
     result = await get_from_cache(attendance_records, token, all_time)
-
+    print(result)
     return JSONResponse(**result)
 
 
@@ -142,10 +143,10 @@ async def get_attendance_list(
 async def get_attendance_file(
     attendance_records: SAttendanceRecord, token=Depends(get_token)
 ):
-
     all_time = str(
         attendance_records.searchCriteria.beginTime
         + attendance_records.searchCriteria.endTime
+        + attendance_records.searchCriteria.elementIDs
     )
 
     data = await get_from_cache(attendance_records, token, all_time)
