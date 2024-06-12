@@ -5,11 +5,14 @@ from app.api.dependencies.token import get_token
 from app.api.services.helper import hik_requests_helper
 from app.core.config import settings
 from app.db.schemas.person import SPersonAccessAdding
+from app.logs.logger import get_logger
 
 router = APIRouter(
     prefix="/access",
     tags=["Группы доступа"],
 )
+
+logger = get_logger(__name__)
 
 
 @router.get("/", summary="Получение всех групп доступа")

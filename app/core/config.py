@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from app.logs.logger import get_logger
+
 
 class Settings(BaseSettings):
 
@@ -26,3 +28,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+logger = get_logger(__name__)
+logger.info(f"Данные окружения имортированы из '{settings['env_file']}'")
+print(settings.model_config)

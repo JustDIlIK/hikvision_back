@@ -22,6 +22,10 @@ from app.api.endpoints.positions import router as router_position
 
 from app.db.connection import engine
 from app.api.services.adminAuth import authentication_backend
+from app.logs.logger import get_logger
+
+
+logger = get_logger(__name__)
 
 
 app = FastAPI(
@@ -58,3 +62,6 @@ admin.add_view(TgUsersAdmin)
 admin.add_view(GroupsAdmin)
 admin.add_view(RecordsAdmin)
 admin.add_view(PositionsAdmin)
+
+
+logger.info("Проект запущен успешно")

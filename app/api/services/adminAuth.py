@@ -8,6 +8,9 @@ from starlette.responses import RedirectResponse
 from app.api.dependencies.users import get_current_user
 from app.api.services.auth import authenticate_user, create_access_token
 from app.core.config import settings
+from app.logs.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class AdminAuth(AuthenticationBackend):
@@ -20,10 +23,14 @@ class AdminAuth(AuthenticationBackend):
         if user:
             access_token = create_access_token({"sub": str(user.id)})
             request.session.update({"token": access_token})
+            logger.info(f"Вход с {user.email}")
+
             return True
 
     async def logout(self, request: Request) -> bool:
         request.session.clear()
+        logger.info(f"Выход с системы")
+
         return True
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:

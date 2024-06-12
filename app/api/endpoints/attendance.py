@@ -39,8 +39,7 @@ async def get_attendance_records(
                 **attendance_records,
             },
         )
-        print(f"{data["data"]["totalNum"]=}")
-        print(f"{page_index=}")
+
         for result in data["data"]["recordList"]:
             snap_pic = result.pop("acsSnapPicList")
 
@@ -99,15 +98,16 @@ async def get_attendance_records(
 async def get_from_cache(
     attendance_records: SAttendanceRecord, token: str, all_time: str
 ):
-    if (
-        all_time in attendance_cache.cache
-        and (datetime.now() - attendance_cache.lt).total_seconds() < 600
-    ):
+
+    if (datetime.now() - attendance_cache.lt).total_seconds() > 600:
+        if all_time in attendance_cache.cache:
+            attendance_cache.clear(all_time)
+
+    if all_time in attendance_cache.cache:
         return {
             "content": attendance_cache.cache[all_time],
             "status_code": 200,
         }
-
     elif all_time in attendance_cache.status:
         if attendance_cache.status[all_time] == "Progress":
             return {
@@ -135,7 +135,6 @@ async def get_attendance_list(
     )
 
     result = await get_from_cache(attendance_records, token, all_time)
-    print(result)
     return JSONResponse(**result)
 
 
@@ -160,7 +159,7 @@ async def get_attendance_file(
 
     for date, persons in data.items():
         for person in persons:
-            print(person)
+
             persons_list.append(person)
 
     df = pd.DataFrame(persons_list)
@@ -242,7 +241,6 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 
     areas = await get_areas(area_data, token)
     persons_dict = {}
-    print(area_data)
     for area in areas:
         await get_attendance_records(
             SAttendanceRecord.parse_obj(
@@ -277,9 +275,15 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
 
+    if (datetime.now() - attendance_cache.lt).total_seconds() > 200:
+        if month_data.date in attendance_cache.cache:
+            attendance_cache.clear(month_data.date)
+
+    print((datetime.now() - attendance_cache.lt).total_seconds())
+    persons_dict = {}
     if (
         month_data.date in attendance_cache.cache
-        and (datetime.now() - attendance_cache.lt).total_seconds() < 600
+        and (datetime.now() - attendance_cache.lt).total_seconds() < 200
         and attendance_cache.status[month_data.date] == "Finish Report"
     ):
         persons_dict = attendance_cache.cache[month_data.date]
@@ -332,7 +336,7 @@ async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_
         for index, person in enumerate(value):
             current_day = int(person["date"].split("-")[2])
 
-            if person["time_end"] != "None":
+            if person["time_end"] != "-":
 
                 time = datetime.strptime(person["time"], "%H:%M:%S")
 

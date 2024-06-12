@@ -5,8 +5,8 @@ async def find_max_min(person_list: list):
 
     if len(person_list) < 2:
         person = person_list[0]
-        person.time_end = "None"
-        person.snapPicUrl2 = "None"
+        person.time_end = "-"
+        person.snapPicUrl2 = "-"
 
         return person
 
