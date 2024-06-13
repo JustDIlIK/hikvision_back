@@ -17,11 +17,18 @@ from app.db.schemas.attendance import SAttendanceRecord, SRecordCertificate, SRe
 
 import pandas as pd
 
+from app.logs.logger import get_logger
+
 router = APIRouter(prefix="/attendance", tags=["Расписание"])
+
+logger = get_logger(__name__)
 
 
 async def get_attendance_records(
-    attendance_records: SAttendanceRecord, token: str, all_time: str
+    attendance_records: SAttendanceRecord,
+    token: str,
+    all_time: str,
+    area_name: str = None,
 ):
 
     attendance_records = attendance_records.dict()
@@ -39,6 +46,23 @@ async def get_attendance_records(
                 **attendance_records,
             },
         )
+
+        size = len(data["data"]["recordList"])
+
+        logger.info(
+            f"Общее количество записей: {data["data"]["totalNum"]}\n"
+            f"Осталось записей: {data["data"]["totalNum"] - (size * page_index)}\n"
+            f"Данные: {attendance_records}"
+        )
+
+        attendance_cache.left_time[all_time] = ""
+
+        if area_name:
+            attendance_cache.left_time[all_time] += f"Объект - {area_name}. "
+
+        attendance_cache.left_time[
+            all_time
+        ] += f"Осталось просмотреть: {data["data"]["totalNum"] - (size * page_index)} записей"
 
         for result in data["data"]["recordList"]:
             snap_pic = result.pop("acsSnapPicList")
@@ -113,10 +137,11 @@ async def get_from_cache(
         and attendance_cache.status[all_time] == "Progress"
     ):
         return {
-            "content": f"Данные еще не готовы!",
+            "content": attendance_cache.left_time[all_time],
             "status_code": 206,
         }
     else:
+        attendance_cache.left_time[all_time] = "Идет вычисление данных"
         attendance_cache.status[all_time] = "Progress"
         asyncio.create_task(get_attendance_records(attendance_records, token, all_time))
         attendance_cache.lt = datetime.now()
@@ -258,6 +283,7 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
             ),
             token,
             month_data.date,
+            area["area"]["name"].split(" - ")[1],
         )
         data = attendance_cache.cache[month_data.date]
 
@@ -290,11 +316,12 @@ async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_
         month_data.date in attendance_cache.status
         and attendance_cache.status[month_data.date] != "Finish Report"
     ):
-        return JSONResponse(
-            content=f"Данные еще не готовы!",
-            status_code=206,
-        )
+        return {
+            "content": attendance_cache.left_time[month_data.date],
+            "status_code": 206,
+        }
     else:
+        attendance_cache.left_time[month_data.date] = "Идет вычисление"
         attendance_cache.status[month_data.date] = "Progress"
         asyncio.create_task(get_attendance_list_reports(month_data, token))
         attendance_cache.lt = datetime.now()

@@ -27,6 +27,7 @@ class AttendanceCache(BaseCache):
     def __init__(self):
         super().__init__()
         self.status = {}
+        self.left_time = {}
 
     def clear(self, index):
         super().clear(index)
