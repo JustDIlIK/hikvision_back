@@ -9,11 +9,14 @@ from app.db.models.records import Record
 from app.db.repositories.record import RecordDAO
 from app.db.schemas.attendance import SRecordCertificate
 from app.db.schemas.record import SRecord
+from app.logs.logger import get_logger
 
 router = APIRouter(
     prefix="/heartbeat",
     tags=["Обновление данных"],
 )
+
+logger = get_logger(__name__)
 
 
 @router.post("/")
@@ -21,6 +24,8 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
     record_data = record_data.dict()
     last_record = await RecordDAO.get_last(record_data["elementIDs"])
+
+    logger.warning(f"{last_record.record_id=}")
 
     if not last_record:
         last_record = Record(record_id="")
@@ -31,6 +36,8 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
 
     page_index = 1
     is_stop = False
+    first_record = None
+    count = 0
 
     while True:
         data = await hik_requests_helper(
@@ -44,15 +51,12 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
         )
 
         persons_record = data["data"]["recordList"]
-        first_record = None
 
         if not persons_record:
             break
 
-        if len(persons_record) > 0:
+        if len(persons_record) > 0 and first_record is None:
             first_record = persons_record[0]
-
-        count = 0
 
         for person_record in persons_record:
 
@@ -63,6 +67,8 @@ async def heartbeat(record_data: SRecord, token=Depends(get_token)):
                 ).date()
                 != datetime.now().date()
             ):
+                logger.warning(f"Here")
+                logger.warning(f"{count}")
 
                 if count != 0:
                     await RecordDAO.add_record(
