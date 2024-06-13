@@ -1,0 +1,40 @@
+Время: 2024-06-13 09:12:29,181
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-13 09:12:31,485
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z'
+
+Время: 2024-06-13 09:18:58,731
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-13 09:18:58,732
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z' с экша
+
+Время: 2024-06-13 09:19:00,042
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-13 09:19:00,043
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z' с экша
+
+Время: 2024-06-13 09:19:00,797
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-13 09:19:00,798
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z' с экша
+

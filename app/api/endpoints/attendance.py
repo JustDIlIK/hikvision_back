@@ -108,12 +108,14 @@ async def get_from_cache(
             "content": attendance_cache.cache[all_time],
             "status_code": 200,
         }
-    elif all_time in attendance_cache.status:
-        if attendance_cache.status[all_time] == "Progress":
-            return {
-                "content": f"Данные еще не готовы!",
-                "status_code": 206,
-            }
+    elif (
+        all_time in attendance_cache.status
+        and attendance_cache.status[all_time] == "Progress"
+    ):
+        return {
+            "content": f"Данные еще не готовы!",
+            "status_code": 206,
+        }
     else:
         attendance_cache.status[all_time] = "Progress"
         asyncio.create_task(get_attendance_records(attendance_records, token, all_time))
@@ -275,24 +277,23 @@ async def get_attendance_list_reports(month_data: SReportCard, token):
 @router.post("/report-card", summary="Получение данных в виде табеля")
 async def get_attendance_report_card(month_data: SReportCard, token=Depends(get_token)):
 
-    if (datetime.now() - attendance_cache.lt).total_seconds() > 200:
+    if (datetime.now() - attendance_cache.lt).total_seconds() > 600:
         if month_data.date in attendance_cache.cache:
             attendance_cache.clear(month_data.date)
 
-    print((datetime.now() - attendance_cache.lt).total_seconds())
-    persons_dict = {}
     if (
         month_data.date in attendance_cache.cache
-        and (datetime.now() - attendance_cache.lt).total_seconds() < 200
         and attendance_cache.status[month_data.date] == "Finish Report"
     ):
         persons_dict = attendance_cache.cache[month_data.date]
-    elif month_data.date in attendance_cache.status:
-        if attendance_cache.status[month_data.date] != "Finish Report":
-            return JSONResponse(
-                content=f"Данные еще не готовы!",
-                status_code=206,
-            )
+    elif (
+        month_data.date in attendance_cache.status
+        and attendance_cache.status[month_data.date] != "Finish Report"
+    ):
+        return JSONResponse(
+            content=f"Данные еще не готовы!",
+            status_code=206,
+        )
     else:
         attendance_cache.status[month_data.date] = "Progress"
         asyncio.create_task(get_attendance_list_reports(month_data, token))

@@ -1,0 +1,24 @@
+Время: 2024-06-13 09:12:31,490
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-05-01T00:00:00+05:00', 'endTime': '2024-05-31T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': '1d9196f3aa524e9896c951ed21b83b5b'}}}
+
+Время: 2024-06-13 09:12:33,703
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-13 09:12:35,243
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.r76aq42julyxbjg93sd6jd1zf2znna2z', 'data': {'pageIndex': 2, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-05-01T00:00:00+05:00', 'endTime': '2024-05-31T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': '1d9196f3aa524e9896c951ed21b83b5b'}}}
+
+Время: 2024-06-13 09:12:36,988
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+

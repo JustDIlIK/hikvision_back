@@ -30,5 +30,4 @@ class Settings(BaseSettings):
 settings = Settings()
 
 logger = get_logger(__name__)
-logger.info(f"Данные окружения имортированы из '{settings['env_file']}'")
-print(settings.model_config)
+logger.info(f"Данные окружения имортированы из '{settings.model_config['env_file']}'")
