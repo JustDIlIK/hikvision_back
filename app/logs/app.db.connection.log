@@ -268,3 +268,48 @@
 Тип: INFO
 Текст: Успешное соединение с базой: backend_hikvision
 
+Время: 2024-06-17 00:15:08,601
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:16:05,092
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:16:28,545
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:18:03,551
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:18:33,910
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:19:41,637
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:19:45,931
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:19:48,498
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+
+Время: 2024-06-17 00:19:56,067
+Модуль: app.db.connection
+Тип: INFO
+Текст: Успешное соединение с базой: backend_hikvision
+

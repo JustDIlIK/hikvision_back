@@ -3651,3 +3651,266 @@ kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1
 Тип: INFO
 Текст: Данные получены с метода
 
+Время: 2024-06-17 00:08:14,576
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:08:26,005
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:08:39,229
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:08:50,358
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:15:14,935
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:15:20,778
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:15:22,287
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 2, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:15:34,315
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:15:35,835
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 3, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:15:39,849
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:17:01,978
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:17:07,040
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:17:08,543
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 2, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:17:08,934
+Модуль: app.api.services.helper
+Тип: ERROR
+Текст: Ошибка при данных с Hikvision
+[Errno 11001] getaddrinfo failed
+Статус кода: 500
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 69, in map_httpcore_exceptions
+    yield
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 373, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 216, in handle_async_request
+    raise exc from None
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 196, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 99, in handle_async_request
+    raise exc
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 122, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_backends\auto.py", line 30, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 114, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\hikvision_back\app\api\services\helper.py", line 20, in hik_requests_helper
+    response = await client.post(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1892, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1574, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1661, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1689, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1726, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1763, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 372, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 86, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Время: 2024-06-17 00:19:07,709
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:19:10,889
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:19:12,425
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 2, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:19:12,839
+Модуль: app.api.services.helper
+Тип: ERROR
+Текст: Ошибка при данных с Hikvision
+[Errno 11001] getaddrinfo failed
+Статус кода: 500
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 69, in map_httpcore_exceptions
+    yield
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 373, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 216, in handle_async_request
+    raise exc from None
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 196, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 99, in handle_async_request
+    raise exc
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_async\connection.py", line 122, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_backends\auto.py", line 30, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 114, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\hikvision_back\app\api\services\helper.py", line 20, in hik_requests_helper
+    response = await client.post(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1892, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1574, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1661, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1689, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1726, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_client.py", line 1763, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 372, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\User\Desktop\hikvision_back\venv\Lib\site-packages\httpx\_transports\default.py", line 86, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Время: 2024-06-17 00:19:29,553
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 1, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:19:33,668
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:19:35,175
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 2, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+
+Время: 2024-06-17 00:19:38,126
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Данные получены с метода
+
+Время: 2024-06-17 00:19:39,627
+Модуль: app.api.services.helper
+Тип: INFO
+Текст: Вызов метода
+url=https://isgp.hikcentralconnect.com/api/hccgw/acs/v1/event/certificaterecords/search
+kwargs={'token': 'hcc.52rnwf3yl4gedvp1qv8f39zpkttjd6qx', 'data': {'pageIndex': 3, 'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}}
+

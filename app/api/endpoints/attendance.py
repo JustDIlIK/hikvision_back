@@ -35,17 +35,20 @@ async def get_attendance_records(
     result_data = {}
     page_index = 1
     while True:
-        attendance_cache.left_time[all_time] = ""
+        try:
+            data = await hik_requests_helper(
+                url=f"{settings.HIKVISION_URL}/api/hccgw/acs/v1/event/certificaterecords/search",
+                token=token,
+                data={
+                    "pageIndex": page_index,
+                    "pageSize": 200,
+                    **attendance_records,
+                },
+            )
+            raise
 
-        data = await hik_requests_helper(
-            url=f"{settings.HIKVISION_URL}/api/hccgw/acs/v1/event/certificaterecords/search",
-            token=token,
-            data={
-                "pageIndex": page_index,
-                "pageSize": 200,
-                **attendance_records,
-            },
-        )
+        except:
+            attendance_cache.status[all_time] = "Error"
 
         size = len(data["data"]["recordList"])
 
@@ -54,6 +57,7 @@ async def get_attendance_records(
             f"Осталось записей: {data["data"]["totalNum"] - (size * page_index)}\n"
             f"Данные: {attendance_records}"
         )
+        attendance_cache.left_time[all_time] = ""
 
         if area_name:
             attendance_cache.left_time[all_time] += f"Объект - {area_name}. "
@@ -134,20 +138,12 @@ async def get_from_cache(
         all_time in attendance_cache.status
         and attendance_cache.status[all_time] == "Progress"
     ):
-        code = 206
-
-        if (
-            datetime.now() - attendance_cache.lt
-        ).total_seconds() > 600 and attendance_cache.left_time[all_time] == "":
-            attendance_cache.status[all_time] = "Error"
-            attendance_cache.left_time[all_time] = "Возникла ошибка, повторите снова"
-            code = 500
 
         return {
             "content": attendance_cache.left_time[all_time],
-            "status_code": code,
+            "status_code": 206,
         }
-    else:
+    else
         attendance_cache.left_time[all_time] = "Идет вычисление данных"
         attendance_cache.status[all_time] = "Progress"
         attendance_cache.lt = datetime.now()
