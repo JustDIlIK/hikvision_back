@@ -281,7 +281,7 @@
 Тип: INFO
 Текст: Общее количество записей: 4290
 Осталось записей: 1290
-Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-07T00:00:00+05:00', 'endTime': '2024-06-14T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+Данные: {'pageSize': 200, 'searchCriteria': в {'beginTime': '2024-06-07T00:00:00+05:00', 'endTime': '2024-06-14T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
 
 Время: 2024-06-13 15:22:48,418
 Модуль: app.api.endpoints.attendance
@@ -1507,4 +1507,74 @@
 Текст: Общее количество записей: 896
 Осталось записей: 416
 Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-05-01T00:00:00+05:00', 'endTime': '2024-06-31T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': '1d9196f3aa524e9896c951ed21b83b5b'}}
+
+Время: 2024-06-16 09:11:27,646
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 86
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-16 09:13:08,853
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 60
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-14T00:00:00+05:00', 'endTime': '2024-06-15T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': '1d9196f3aa524e9896c951ed21b83b5b'}}
+
+Время: 2024-06-16 16:04:34,146
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 0
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': '1d9196f3aa524e9896c951ed21b83b5b'}}
+
+Время: 2024-06-16 16:04:44,926
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 105
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-16 16:14:48,577
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 105
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-16 23:55:01,728
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 185
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-16 23:58:08,113
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 185
+Осталось записей: 0
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-16T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-17 00:03:34,355
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 456
+Осталось записей: 256
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-17 00:03:39,652
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 456
+Осталось записей: 56
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
+
+Время: 2024-06-17 00:03:43,403
+Модуль: app.api.endpoints.attendance
+Тип: INFO
+Текст: Общее количество записей: 456
+Осталось записей: 288
+Данные: {'pageSize': 200, 'searchCriteria': {'beginTime': '2024-06-15T00:00:00+05:00', 'endTime': '2024-06-17T00:00:00+05:00', 'eventTypes': '110013', 'elementIDs': 'aec5796cd2934e18bdc00a6521cee7ef'}}
 
