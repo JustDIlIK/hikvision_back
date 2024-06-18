@@ -45,10 +45,10 @@ async def get_attendance_records(
                     **attendance_records,
                 },
             )
-            raise
-
         except:
-            attendance_cache.status[all_time] = "Error"
+            await asyncio.sleep(1)
+
+            continue
 
         size = len(data["data"]["recordList"])
 
@@ -143,7 +143,7 @@ async def get_from_cache(
             "content": attendance_cache.left_time[all_time],
             "status_code": 206,
         }
-    else
+    else:
         attendance_cache.left_time[all_time] = "Идет вычисление данных"
         attendance_cache.status[all_time] = "Progress"
         attendance_cache.lt = datetime.now()
@@ -192,6 +192,9 @@ async def get_attendance_file(
         for person in persons:
 
             persons_list.append(person)
+
+    if len(persons_list) == 0:
+        return JSONResponse(content="Нет данных на эту дату", status_code=404)
 
     df = pd.DataFrame(persons_list)
 
