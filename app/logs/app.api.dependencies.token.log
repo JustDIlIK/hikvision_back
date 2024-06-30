@@ -5562,3 +5562,193 @@ httpx.ConnectError: [Errno 11001] getaddrinfo failed
 Тип: INFO
 Текст: Использован токен 'hcc.klfn1yjf70yw3ju2je3mcofuuifejkk2' с экша
 
+Время: 2024-06-30 17:28:58,661
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:29:00,163
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:29:16,567
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:29:16,568
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+
+Время: 2024-06-30 17:32:28,593
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:32:28,594
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+
+Время: 2024-06-30 17:34:32,444
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:34:33,820
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:42:27,222
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:42:32,779
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:43:04,746
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:43:05,899
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:44:21,013
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:44:22,561
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:44:54,614
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:44:56,095
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:46:05,881
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:46:07,293
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:46:21,250
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:46:22,717
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:46:58,326
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:46:59,258
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 17:52:56,953
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:52:56,954
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+
+Время: 2024-06-30 17:58:24,249
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 17:58:25,821
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 18:07:05,486
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:07:06,913
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 18:09:14,977
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:09:16,485
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 18:09:55,250
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:09:56,240
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Получен новый токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h'
+
+Время: 2024-06-30 18:12:34,051
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:12:34,051
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+
+Время: 2024-06-30 18:14:22,512
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:14:22,512
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+
+Время: 2024-06-30 18:14:28,435
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Вызов метода get_token()
+
+Время: 2024-06-30 18:14:28,435
+Модуль: app.api.dependencies.token
+Тип: INFO
+Текст: Использован токен 'hcc.5hpeygo509v87xdancr03q1b9u1jta4h' с экша
+

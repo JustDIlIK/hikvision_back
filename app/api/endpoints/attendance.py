@@ -1,6 +1,6 @@
 import asyncio
 from calendar import monthrange
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 
 from fastapi import APIRouter, Depends
@@ -34,7 +34,18 @@ async def get_attendance_records(
     attendance_records = attendance_records.dict()
     result_data = {}
     page_index = 1
+    last_date = None
+
     while True:
+
+        if page_index == 51:
+            last_date = datetime.strptime(last_date, "%Y-%m-%d")
+            last_date = last_date + timedelta(days=2)
+
+
+            attendance_records["searchCriteria"]["endTime"] = last_date.strftime("%Y-%m-%d") + "T" + attendance_records["searchCriteria"]["endTime"].split("T")[1]
+            page_index = 1
+
         try:
             data = await hik_requests_helper(
                 url=f"{settings.HIKVISION_URL}/api/hccgw/acs/v1/event/certificaterecords/search",
@@ -98,6 +109,9 @@ async def get_attendance_records(
                     result_data[date][person_id] = [person]
             else:
                 result_data[date] = {person_id: [person]}
+
+            if page_index == 50:
+                last_date = date
 
         if data["data"]["totalNum"] < page_index * attendance_records["pageSize"]:
             break
@@ -185,7 +199,8 @@ async def get_attendance_file(
         return JSONResponse(**data)
 
     data = data["content"]
-
+    print("Все просчитано!!!")
+    print(len(data))
     persons_list = []
 
     for date, persons in data.items():
